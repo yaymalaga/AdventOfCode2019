@@ -1,31 +1,24 @@
+use day1::Module;
+
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{BufRead, BufReader};
+
+const FILE_NAME: &str = "input";
 
 fn main() {
-    let file = File::open("./input").unwrap();
+    let file = File::open(format!("src/{}", FILE_NAME)).expect("File not found");
     let reader = BufReader::new(file);
 
-    let mut simple_fuel_counter = 0;
-    let mut fuel_counter = 0;
+    let mut total_fuel_1: u32 = 0;
+    let mut total_fuel_2: u32 = 0; 
     for line in reader.lines() {
-        if let Ok(x) = line {
-
-            let number: i32 = x.parse().expect("Invalid number");
-            let mut module_fuel: i32 = (number/3)-2;
-            simple_fuel_counter += module_fuel;
-
-            let mut extra_fuel = module_fuel;
-            while extra_fuel > 0 {
-                extra_fuel = (extra_fuel/3)-2;
-                if extra_fuel > 0 {
-                    module_fuel += extra_fuel;
-                }
-            }
-
-            fuel_counter += module_fuel;
-        };
+        let data: u32 = line.expect("Error while reading the file").parse().expect("Invalid number"); 
+        let module = Module::from(data);
+        total_fuel_1 += module.initial_fuel();
+        total_fuel_2 += module.initial_fuel() + module.extra_fuel();
     }
 
-    println!("Part 1: {}", simple_fuel_counter);
-    println!("Part 2: {}", fuel_counter);
+    println!("PROBLEM 1 - Total fuel needed is: {}", total_fuel_1);
+
+    println!("PROBLEM 2 - Total fuel needed is: {}", total_fuel_2);
 }
