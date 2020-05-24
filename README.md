@@ -41,66 +41,65 @@ When I discovered AoC, I saw an incredible oportunity to start ironing Rust afte
   - [x] Second part
   
 - Day 10
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 11
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 12
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 13
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 14
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 15
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 16
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 17
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 18
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 19
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 20
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 21
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 22
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 23
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 24
-  - [] First part
-  - [] Second part
+  - [ ] First part
+  - [ ] Second part
   
 - Day 25
-  - [] First part
-  - [] Second part
-  
+  - [ ] First part
+  - [ ] Second part
