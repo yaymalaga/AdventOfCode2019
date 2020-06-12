@@ -45,8 +45,8 @@ When I discovered AoC, I saw an incredible oportunity to start ironing Rust afte
   - [x] Second part
   
 - Day 11
-  - [ ] First part
-  - [ ] Second part
+  - [x] First part
+  - [x] Second part
   
 - Day 12
   - [ ] First part
