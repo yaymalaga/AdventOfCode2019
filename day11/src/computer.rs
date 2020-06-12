@@ -80,9 +80,7 @@ impl Computer {
     }
 
     fn run_step(self: &mut Self) -> Option<Status> {
-        if self.program.is_empty() {
-            None 
-        } else {
+        if !self.program.is_empty() {
             let status;
 
             let instruction = self.get_instruction();
@@ -90,25 +88,19 @@ impl Computer {
                 OpCode::Add | OpCode::Multiply | OpCode::LessThan | OpCode::Equals => {
                     let first_param = match instruction.first_param_mode {
                         ParamMode::Position => self.get_value(self.get_first_parameter() as usize),
-                        ParamMode::Relative => self.get_value(
-                            (self.get_first_parameter() + self.relative_base as i64) as usize,
-                        ),
+                        ParamMode::Relative => self.get_value((self.get_first_parameter() + self.relative_base as i64) as usize),
                         ParamMode::Inmediate => self.get_first_parameter(),
                     };
 
                     let second_param = match instruction.second_param_mode {
                         ParamMode::Position => self.get_value(self.get_second_parameter() as usize),
-                        ParamMode::Relative => self.get_value(
-                            (self.get_second_parameter() + self.relative_base as i64) as usize,
-                        ),
+                        ParamMode::Relative => self.get_value((self.get_second_parameter() + self.relative_base as i64) as usize),
                         ParamMode::Inmediate => self.get_second_parameter(),
                     };
 
                     let result_position = match instruction.third_param_mode {
                         ParamMode::Position => self.get_third_parameter() as usize,
-                        ParamMode::Relative => {
-                            (self.get_third_parameter() + self.relative_base as i64) as usize
-                        }
+                        ParamMode::Relative => (self.get_third_parameter() + self.relative_base as i64) as usize,
                         ParamMode::Inmediate => {
                             panic!("OPCODE result position can't have Inmediate mode")
                         }
@@ -138,13 +130,11 @@ impl Computer {
                 OpCode::Input => {
                     let first_param = match instruction.first_param_mode {
                         ParamMode::Position => self.get_first_parameter() as usize,
-                        ParamMode::Relative => {
-                            (self.get_first_parameter() + self.relative_base as i64) as usize
-                        }
+                        ParamMode::Relative => (self.get_first_parameter() + self.relative_base as i64) as usize,
                         ParamMode::Inmediate => panic!("OPCODE 3 param can't have Inmediate mode"),
                     };
 
-                    let input: i64 = if self.inputs.is_empty() {
+                    let input: i64 = if !self.inputs.is_empty() {
                         self.inputs.remove(0)
                     } else if let Some(x) = &self.receiver {
                         x.recv().unwrap()
@@ -160,9 +150,7 @@ impl Computer {
                 OpCode::Output | OpCode::RelativeOffset => {
                     let first_param = match instruction.first_param_mode {
                         ParamMode::Position => self.get_value(self.get_first_parameter() as usize),
-                        ParamMode::Relative => self.get_value(
-                            (self.get_first_parameter() + self.relative_base as i64) as usize,
-                        ),
+                        ParamMode::Relative => self.get_value((self.get_first_parameter() + self.relative_base as i64) as usize),
                         ParamMode::Inmediate => self.get_first_parameter(),
                     };
 
@@ -170,7 +158,7 @@ impl Computer {
                         self.outputs.push(first_param);
 
                         if let Some(x) = &self.sender {
-                            if x.send(first_param).is_err() {} 
+                            if x.send(first_param).is_err() {}
                             // Error means that receiver has closed connection. After this the computer will halt.
                         }
                     } else {
@@ -179,13 +167,11 @@ impl Computer {
 
                     self.pointer += 2;
                     status = Status::Running;
-                }
+                },
                 OpCode::JumpIfTrue | OpCode::JumpIfFalse => {
                     let first_param = match instruction.first_param_mode {
                         ParamMode::Position => self.get_value(self.get_first_parameter() as usize),
-                        ParamMode::Relative => self.get_value(
-                            (self.get_first_parameter() + self.relative_base as i64) as usize,
-                        ),
+                        ParamMode::Relative => self.get_value((self.get_first_parameter() + self.relative_base as i64) as usize),
                         ParamMode::Inmediate => self.get_first_parameter(),
                     };
 
@@ -200,9 +186,7 @@ impl Computer {
                             ParamMode::Position => {
                                 self.get_value(self.get_second_parameter() as usize)
                             }
-                            ParamMode::Relative => self.get_value(
-                                (self.get_second_parameter() + self.relative_base as i64) as usize,
-                            ),
+                            ParamMode::Relative => self.get_value((self.get_second_parameter() + self.relative_base as i64) as usize),
                             ParamMode::Inmediate => self.get_second_parameter(),
                         };
                         self.pointer = second_param as usize;
@@ -216,6 +200,8 @@ impl Computer {
             }
 
             Some(status)
+        } else {
+            None
         }
     }
 
