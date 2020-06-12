@@ -80,7 +80,9 @@ impl Computer {
     }
 
     fn run_step(self: &mut Self) -> Option<Status> {
-        if !self.program.is_empty() {
+        if self.program.is_empty() {
+            None 
+        } else {
             let status;
 
             let instruction = self.get_instruction();
@@ -122,12 +124,10 @@ impl Computer {
                         } else {
                             0
                         }
+                    } else if first_param == second_param {
+                        1
                     } else {
-                        if first_param == second_param {
-                            1
-                        } else {
-                            0
-                        }
+                        0
                     };
 
                     self.write_value(result_position, result);
@@ -144,14 +144,12 @@ impl Computer {
                         ParamMode::Inmediate => panic!("OPCODE 3 param can't have Inmediate mode"),
                     };
 
-                    let input: i64 = if !self.inputs.is_empty() {
+                    let input: i64 = if self.inputs.is_empty() {
                         self.inputs.remove(0)
+                    } else if let Some(x) = &self.receiver {
+                        x.recv().unwrap()
                     } else {
-                        if let Some(x) = &self.receiver {
-                            x.recv().unwrap()
-                        } else {
-                            panic!("No input nor receiver available");
-                        }
+                        panic!("No input nor receiver available");
                     };
 
                     self.write_value(first_param, input);
@@ -172,9 +170,8 @@ impl Computer {
                         self.outputs.push(first_param);
 
                         if let Some(x) = &self.sender {
-                            if let Err(_) = x.send(first_param) {
-                                () // Error means that receiver has closed connection. After this the computer will halt.
-                            }
+                            if x.send(first_param).is_err() {} 
+                            // Error means that receiver has closed connection. After this the computer will halt.
                         }
                     } else {
                         self.relative_base += first_param as isize;
@@ -219,8 +216,6 @@ impl Computer {
             }
 
             Some(status)
-        } else {
-            None
         }
     }
 
@@ -242,7 +237,7 @@ impl Computer {
     pub fn run(&mut self) {
         loop {
             let status = self.run_step();
-            if let None = status {
+            if status.is_none() {
                 panic!("No program loaded in the computer");
             } else if let Some(Status::Halt) = status {
                 break;
